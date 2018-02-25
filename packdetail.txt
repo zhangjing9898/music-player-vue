@@ -1,3 +1,61 @@
  "babel-runtime": "^6.0.0",    //es6语法转义
 
  "fastclick": "^1.0.6",        //解决移动端 点击延迟300ms事件
+
+ /*vue2.0提供了一个keep-alive组件
+ 用来缓存组件,避免多次加载相应的组件,减少性能消耗
+ */
+
+ //在做getDiscList这个api的时候遇到了一些坑
+ 因为vue2.0版本中将dev-server和dev-client删除了
+ 并且这里的请求需要使用到axios代理。
+ 下面记录做法：
+
+ 在使用vue开发过程中，难免需要去本地数据地址进行请求，而原版配置在dev-server.js中，新版vue-webpack-template已经删除dev-server.js，改用webpack.dev.conf.js代替，所以 配置本地访问在webpack.dev.conf.js里配置即可。
+
+ #webpack.dev.conf.js
+ //首先
+ // nodejs开发框架express，用来简化操作
+ const express = require('express')
+ // 创建node.js的express开发框架的实例
+ const app = express()
+ // 引用的json地址
+ var appData = require('../data.json')
+ // json某一个key
+ var goods = appData.result
+
+ var apiRoutes = express.Router()
+ app.use('/api', apiRoutes)
+ 1. get请求配置
+
+ 在 const portfinder = require('portfinder')后添加
+
+ #webpack.dev.conf.js
+ // 在devServer选项中添加以下内容
+ before(app) {
+   app.get('/api/someApi', (req, res) => {
+     res.json({
+       // 这里是你的json内容
+     })
+   })
+ }
+ 注意： 修改配置文件完毕后，需要重新运行命令npm run dev即可。
+
+ 2. post请求配置。
+
+ 如果要配置post请求，需要在该文件夹配置如下:
+
+ #webpack.dev.conf.js
+ apiRoutes.post('/foods', function (req, res) { //注意这里改为post就可以了
+   res.json({
+     error: 0,
+     data: foods
+   });
+ })
+ // 在组件里面
+ #...vue
+ created () {
+  this.$http.post('http://localhost:8080/api/foods').then((res) => {
+   console.log(res)
+  })
+ }
