@@ -16,7 +16,7 @@
           <ul>
             <li v-for="item in discList" class="item">
               <div class="icon">
-                <img width="60" height="60" :src="item.imgurl"/>
+                <img width="60" height="60" v-lazy="item.imgurl"/>
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>
@@ -26,7 +26,8 @@
           </ul>
         </div>
       </div>
-      <div class="loading-container">
+      <div class="loading-container" v-show="!discList.length">
+        <loading></loading>
       </div>
     </scroll>
     <router-view></router-view>
@@ -36,8 +37,11 @@
 
 <script type="text/ecmascript-6">
   import Slider from '../../base/slider/slider.vue'
+  import Loading from '../../base/loading/loading.vue'
   import {getRecommend, getDiscList} from '../../api/recommend'
   import {ERR_OK} from '../../api/config'
+  import Scroll from '../../base/scroll/scroll.vue'
+
   export default {
     data(){
       return {
@@ -47,7 +51,7 @@
     },
     created(){
       this._getRecommend();
-      this._getDiscList()
+      this._getDiscList();
     },
     methods: {
       _getRecommend(){
@@ -66,7 +70,9 @@
       }
     },
     components: {
-      Slider
+      Slider,
+      Loading,
+      Scroll,
     }
   }
 </script>
