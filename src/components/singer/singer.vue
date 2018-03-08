@@ -1,12 +1,36 @@
 <template>
-  <div class="test">
-    singer page
+  <div class="singer" ref="singer">
+    <router-view></router-view>
   </div>
 
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  import {getSingerList} from '../../api/singer'
+  import {ERR_OK} from '../../api/config'
+
+  export default {
+
+    //data 是一个function
+    data(){
+      return {
+        singers: []
+      }
+    },
+    created(){
+
+    },
+    methods:{
+        _getSingerList(){
+            getSingerList().then((res)=>{
+                if(res.code===ERR_OK){
+                    this.singers=res.data.list
+                }
+            })
+        }
+    }
+
+  }
 </script>
 
 <!--scoped实现私有化样式-->
@@ -14,6 +38,9 @@
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
 
-  .test
-    color white
+  .singer
+    position: fixed
+    top: 88px
+    bottom: 0
+    width: 100%
 </style>
