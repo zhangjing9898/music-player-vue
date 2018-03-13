@@ -75,8 +75,10 @@
       this.listHeight = []
     },
     methods: {
-      selectItem(item) {
-        this.$emit('select', item)
+      selectItem(item){
+          //触发当前实例上的事件。附加参数都会传给监听器回调 派发
+          //vm.$emit( event, […args] )
+          this.$emit('select',item)
       },
       onShortcutTouchStart(e) {
         let anchorIndex = getData(e.target, 'index')
