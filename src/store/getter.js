@@ -15,3 +15,8 @@ export const currentIndex=state=>state.currentIndex;
 export const currentSong=(state)=>{
   return state.playlist[state.currentIndex]||{}
 }
+
+export const currentSongPlay=(state)=>{
+  let mid=state.playlist[state.currentIndex].mid || {}
+  return "http://ws.stream.qqmusic.qq.com/C100"+mid+".m4a?fromtag=46" || {}
+}

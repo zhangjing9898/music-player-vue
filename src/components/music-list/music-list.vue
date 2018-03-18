@@ -5,7 +5,12 @@
     </div>
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImage">
-      <div class="play-warpper"></div>
+      <div class="play-wrapper">
+        <div ref="playBtn" class="play" v-show="songs.length>0">
+          <i class="icon-play"></i>
+          <span class="text">随机播放全部</span>
+        </div>
+      </div>
       <div class="filter" ref="filter"></div>
     </div>
     <div class="bg-layer" ref="layer"></div>
@@ -15,7 +20,10 @@
              :probe-type="probeType"
             class="list" ref="list">
       <div class="song-list-wrapper">
-        <song-list :songs="songs"></song-list>
+        <song-list :songs="songs" @select="selectItem"></song-list>
+      </div>
+      <div v-show="!songs.length" class="loading-container">
+        <loading></loading>
       </div>
     </scroll>
   </div>
@@ -23,8 +31,10 @@
 
 <script type="text/ecmascript-6">
   import Scroll from '../../base/scroll/scroll.vue';
+  import Loading from '../../base/loading/loading.vue'
   import SongList from '../../base/song-list/song-list.vue'
   import {prefixStyle} from '../../common/js/dom'
+  import {mapActions} from 'vuex'
 
   const RESERVED_HEIGHT=40;
   const transform = prefixStyle('transform');
@@ -72,7 +82,16 @@
           },
           back(){
               this.$router.back()
-          }
+          },
+          selectItem(item,index){
+            this.selectPlay({
+              list:this.songs,
+              index
+            })
+          },
+        ...mapActions([
+            'selectPlay'
+        ])
       },
       watch:{
           scrollY(newVal){
@@ -107,7 +126,8 @@
       },
       components:{
           Scroll,
-          SongList
+          SongList,
+          Loading
       }
   }
 
