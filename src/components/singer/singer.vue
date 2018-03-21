@@ -12,12 +12,13 @@
   import {ERR_OK} from '../../api/config'
   import Singer from '../../common/js/singer'
   import {mapMutations} from 'vuex';
+  import {playlistMixin} from '../../common/js/mixin'
 
   const HOT_SINGER_LEN=10;
   const HOT_NAME='热门';
 
   export default {
-
+    mixins:[playlistMixin],
     //data 是一个function
     data(){
       return {
@@ -28,6 +29,11 @@
       this._getSingerList()
     },
     methods:{
+        handlePlaylist(playlist){
+          const bottom=playlist.length>0?'60px':''
+          this.$refs.singer.style.bottom=bottom;
+          this.$refs.list.refresh()
+        },
         selectSinger(singer){
           console.log(singer.id);
           this.$router.push({

@@ -6,7 +6,8 @@
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="play-wrapper">
-        <div ref="playBtn" class="play" v-show="songs.length>0">
+        <div ref="playBtn" class="play" v-show="songs.length>0"
+                            @click="random">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -35,12 +36,14 @@
   import SongList from '../../base/song-list/song-list.vue'
   import {prefixStyle} from '../../common/js/dom'
   import {mapActions} from 'vuex'
+  import {playlistMixin} from '../../common/js/mixin'
 
   const RESERVED_HEIGHT=40;
   const transform = prefixStyle('transform');
   const backdrop=prefixStyle('backdrop-filter');
 
   export default{
+      mixins:[playlistMixin],
       props:{
           bgImage:{
               type:String,
@@ -77,6 +80,11 @@
           this.$refs.list.$el.style.top=`${this.imageHeight}px`
       },
       methods:{
+          handlePlaylist(playlist){
+            const bottom=playlist.length>0?'60px':''
+            this.$refs.list.$el.style.bottom=bottom;
+            this.$refs.list.refresh();
+          },
           scroll(pos){
               this.scrollY=pos.y
           },
@@ -89,8 +97,14 @@
               index
             })
           },
+        random(){
+          this.randomPlay({
+            list:this.songs
+          })
+        },
         ...mapActions([
-            'selectPlay'
+            'selectPlay',
+            'randomPlay'
         ])
       },
       watch:{
@@ -116,9 +130,11 @@
                   zIndex=10;
                   this.$refs.bgImage.style.paddingTop=0;
                   this.$refs.bgImage.style.height=`${RESERVED_HEIGHT}px`;
+                  this.$refs.playBtn.style.display='none';
               }else{
                   this.$refs.bgImage.style.paddingTop='70%';
                   this.$refs.bgImage.style.height=0;
+                this.$refs.playBtn.style.display='';
               }
               this.$refs.bgImage.style[transform]=`scale(${scale})`;
               this.$refs.bgImage.style.zIndex=zIndex
