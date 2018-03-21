@@ -22,7 +22,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ##screen-shot
 
-![选项卡切换](https://raw.githubusercontent.com/zhangjing9898/music-player-vue/screen-shot/index.gif)
+![选项卡切换](https://github.com/zhangjing9898/music-player-vue/blob/master/screen-shot/index.gif)
 
 
 ![歌曲列表下拉效果](https://raw.githubusercontent.com/zhangjing9898/music-player-vue/screen-shot/pull.gif)
