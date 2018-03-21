@@ -27,4 +27,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ![歌曲列表下拉效果](https://github.com/zhangjing9898/music-player-vue/blob/master/screen-shot/pull.gif)
 
-![播放器效果](https://github.com/zhangjing9898/music-player-vue/blob/master/screen-shot/player.gif）
+
+![歌曲列表下拉效果](https://github.com/zhangjing9898/music-player-vue/blob/master/screen-shot/player.gif）
