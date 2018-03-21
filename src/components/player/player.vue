@@ -69,7 +69,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon"></i>
+              <i :class="iconLike" @click="changeLike"></i>
             </div>
           </div>
         </div>
@@ -125,7 +125,8 @@
         currentLyric:null,
         currentLineNum:0,
         currentShow:'cd',
-        playingLyric:null
+        playingLyric:null,
+        like:false
       }
     },
     computed: {
@@ -137,6 +138,9 @@
       },
       iconMode(){
         return this.mode === playMode.sequence?'icon-sequence':this.mode===playMode.loop?'icon-loop':'icon-random'
+      },
+      iconLike(){
+        return this.like?'icon-favorite':'icon-not-favorite'
       },
       miniIcon() {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
@@ -216,6 +220,9 @@
         if(this.currentLyric){
             this.currentLyric.togglePlay();
         }
+      },
+      changeLike(){
+          this.like=!this.like;
       },
       end(){
           if(this.mode===playMode.loop){
