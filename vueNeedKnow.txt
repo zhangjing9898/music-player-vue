@@ -14,3 +14,96 @@ v-text会将元素当成纯文本输出，v-html会将元素当成HTML标签解�
 number | 0 可以向下取整
 因为|这个是或位操作符，意思是先将数值转换成32位二进制整数值（如果有小数则忽略），再对二进制上每一位进行或运算，得出结果；
 这里xxx|0，因为0的二进制就是0000000...00一共32位（32个0），无论任何数对0进行或运算都是原来的数，因此可以用它来进行向下取整
+
+四 ： vue lazy-load
+Vue.use(VueLazyload,{
+  loading:require('./common/image/default.png')
+})
+<div class="icon">
+  <img width="60" height="60" v-lazy="item.imgurl"/>
+</div>
+
+五 ： vue 自定义指令
+vue中自定义指令名称必须v-开头，不过我们在定义这个自定义指令时，名称省略v-的前缀，如;
+自定义指令的名称为v-red，则定义为:
+vue.directive('red',function(el){});
+该函数当中的形参el代表使用了这个v-red指令的dom元素，代码如下:
+<script>
+    window.onload = function(){
+        Vue.directive('red',function(el){
+            el.style.color = 'red';
+        });
+        var vm = new Vue({
+            el:'#box',
+            data:{
+                msg:'qianqian'
+            }
+        });
+    };
+</script>
+<div id="box">
+    <h2 v-red>{{msg}}</h2>
+</div>
+
+可接收参数的自定义指令定义为vue.directive('red',function(el,binding){})
+该函数当中的形参el代表使用了这个v-red指令的dom元素，在函数体内部使用binding.value
+来代表该自定义指令所接收到的参数，代码如下
+<script>
+    window.onload = function(){
+        Vue.directive('red',function(el,binding){
+            el.style.color = binding.value;
+        });
+        var vm = new Vue({
+            el:'#box',
+            data:{
+                msg:'qianqian',
+                b:'skyblue'
+            }
+        });
+    };
+</script>
+<div id="box">
+    <h2 v-red="b">{{msg}}</h2>
+</div>
+
+当自定义指令接收的参数为一个对象时，示例代码如下所示：
+<script>
+    window.onload = function(){
+        Vue.directive('red',function(el,binding){
+            el.style.color = binding.value.color;
+            el.style.backgroundColor = binding.value.background;
+        });
+        var vm = new Vue({
+            el:'#box',
+            data:{
+                msg:'qianqian',
+                b:'skyblue',
+                c:'yellow'
+            }
+        });
+    };
+</script>
+<div id="box">
+    <h2 v-red="{color:b,background:c}">{{msg}}</h2>
+</div>
+
+六 ： 生命周期函数
+vue提供了几个钩子函数，用于对应由vue创建的实例对象的生命周期，下面来罗列
+vue2.0当中定义的生命周期函数。
+
+1.beforeCreate 当实例在函数对象刚被创建，还没有绑定属性时触发执行
+
+2.create 该函数在实例对象完成创建和属性绑定，但是dom还没有生成时触发执行
+
+3.beforeMount 该函数在组件挂载之前触发执行。
+
+4.mounted 该函数在组件挂载完成之后执行。
+
+5.beforeUpdate 该函数在组件数据更新之前触发执行。
+
+6.updated 该函数在组件数据更新完毕之后触发执行。
+
+7.beforeDestroy 该函数在实例对象销毁之前触发执行。
+
+8.destroyed 该函数在实例对象完成销毁之后触发执行
+
