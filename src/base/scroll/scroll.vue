@@ -68,6 +68,10 @@
           })
         }
 
+        if(this.pulldown){
+          this.scroll.on('')
+        }
+
         if (this.beforeScroll) {
           this.scroll.on('beforeScrollStart', () => {
             this.$emit('beforeScroll')

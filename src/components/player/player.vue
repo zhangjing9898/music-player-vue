@@ -102,6 +102,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+//player中使用的vuex 是因为很多共享state需要进行记录和更新 data双向绑定
   import {mapGetters, mapMutations, mapActions} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from '../../common/js/dom'
@@ -151,6 +152,11 @@
       percent() {
         return this.currentTime / this.currentSong.duration
       },
+      //...为es6中的数组扩展运算符 给一个例子：
+      //a=[1,2,3]
+      //b=[...a]
+      //b=[1,2,3]
+      //https://segmentfault.com/q/1010000012469852/a-1020000012470394 参考这篇blog
       ...mapGetters([
         'currentIndex',
         'fullScreen',
@@ -160,6 +166,8 @@
         'mode',
         'sequenceList'
       ])
+      //这里只是简化了写法
+      // 映射 `this.currentIndex` 为 `store.getters.currentIndex`
     },
     created(){
       this.touch={}
