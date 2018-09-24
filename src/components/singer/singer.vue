@@ -93,6 +93,8 @@
            });
            return hot.concat(ret);
         },
+      //mapMutations/mapActions只是把mutation/action函数绑定到methods里面，调里面的方法时正常传参数
+      //简单说法 映射
       ...mapMutations({
         setSinger:'SET_SINGER'
       })
